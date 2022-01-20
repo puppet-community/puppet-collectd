@@ -1,0 +1,40 @@
+<% if @data or @hosts -%>
+<Plugin modbus>
+<% @data.sort_by {|k,v| k}.each do |key,val| -%>
+  <Data "<%= key %>">
+    Type "<%= val['type'] %>"
+<% if val['instance'] -%>
+    Instance "<%= val['instance'] %>"
+<% end -%>
+<% if val['register_base'] -%>
+    RegisterBase <%= val['register_base'] %>
+<% end -%>
+<% if val['register_type'] -%>
+    RegisterType <%= val['register_type'] %>
+<% end -%>
+  </Data>
+<% end -%>
+
+<% @hosts.sort_by {|k,v| k}.each do |key,val| -%>
+  <Host "<%= key %>">
+    Address "<%= val['address'] %>"
+<%   if val['port'] -%>
+    Port <%= val['port'] %>
+<%   end -%>
+<%   if val['interval'] -%>
+    Interval <%= val['interval'] %>
+<%   end -%>
+<% if val['slaves'] -%>
+<%   Array(val['slaves']).sort_by {|k,v| k}.each do |slave_key,slave_val| -%>
+    <Slave <%= slave_key %>>
+<%     if slave_val['instance'] -%>
+      Instance "<%= slave_val['instance'] %>"
+<%     end -%>
+      Collect <%= Array(slave_val['collect']).sort.map { |x| %("#{x}") }.join(' ') %>
+    </Slave>
+<%   end -%>
+<% end -%>
+  </Host>
+<% end -%>
+</Plugin>
+<% end -%>
