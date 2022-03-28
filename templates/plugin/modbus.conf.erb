@@ -30,7 +30,9 @@
 <%     if slave_val['instance'] -%>
       Instance "<%= slave_val['instance'] %>"
 <%     end -%>
-      Collect <%= Array(slave_val['collect']).sort.map { |x| %("#{x}") }.join(' ') %>
+<%      Array(slave_val['collect']).sort_by {|x| x}.each do |data_name| -%>
+      Collect "<%= data_name %>"
+<%     end -%>
     </Slave>
 <%   end -%>
 <% end -%>
